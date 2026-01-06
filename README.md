@@ -2,7 +2,7 @@
    <img width="567" height="204" alt="Image" src="https://github.com/user-attachments/assets/35eae37f-606c-4fbb-b063-fe80584e8af9" />
 </p>
 
-TSSK (TV Show Status for Kometa) checks your [Sonarr](https://sonarr.tv/) for your TV Shows statuses and creates .yml files<br>
+TSSK (TV Show Status for Kometa) checks [Sonarr](https://sonarr.tv/) for your TV Shows statuses and creates .yml files<br>
 which can be used by [Kometa](https://kometa.wiki/) to create collections and overlays.</br>
 
 
@@ -14,30 +14,17 @@ Categories:
 *  Shows with upcoming season finales within x days
 *  Shows for which a season finale was added which aired in the past x days
 *  Shows for which a final episode was added which aired in the past x days
-*  Returning Shows
-*  Ended Shows
-*  Canceled Shows
-
-<sub>Also see [UMTK](https://github.com/netplexflix/Upcoming-Movies-TV-Shows-for-Kometa) for adding a category for upcoming Movies and TV shows</sub>
-
-Example overlays (you can fully customize placement, colors, text, etc:
-![Image](https://github.com/user-attachments/assets/e7c517cc-5164-41d9-8e5e-015577aad36e)
-
-Example collection:</br>
-<img width="696" height="403" alt="Image" src="https://github.com/user-attachments/assets/b52c411f-4d73-4386-93c4-38cee8ea2998" />
 
 ---
 
 ## 📝 Table of Contents
 * [✨ Features](#-features)
 * [🛠️ Installation](#-installation)
-    * [▶️ Option 1: Manual (Python)](#-option-1-manual-python)
-    * [▶️ Option 2: Docker](#-option-2-docker)
-    * [🧩 Continue Setup](#-continue-setup)
-        * [1️⃣ Edit your Kometa config](#1-edit-your-kometa-config)
-        * [2️⃣ Edit your configuration file](#2-edit-your-configuration-file)
+* [🧩 Continue Setup](#-continue-setup)
+    * [1️⃣ Edit your Kometa config](#1-edit-your-kometa-config)
+    * [2️⃣ Edit your configuration file](#2-edit-your-configuration-file)
 * [⚙️ Configuration](#-configuration)
-* [🚀 Usage - Running the Script](#-usage---running-the-script)
+* [🚀 Usage](#-usage)
 * [⚠️ Do you Need Help or have Feedback?](#️-do-you-need-help-or-have-feedback)
   
 ---
@@ -47,7 +34,6 @@ Example collection:</br>
 - 🏁 **Aired Finale labelling**: Use a separate overlay for shows for which a Finale was added.
 -  ▼ **Filters out unmonitored**: Skips show if season/episode is unmonitored. (optional)
 -  🪄 **Customizable**: Change date format, collection name, overlay positioning, text, ..
--  🌎 **Timezones**: Choose your timezone, regardless of where the script is ran from.
 - ℹ️ **Informs**: Lists matched and skipped(unmonitored) TV shows.
 - 📝 **Creates .yml**: Creates collection and overlay files which can be used with Kometa.
 
@@ -55,176 +41,105 @@ Example collection:</br>
 
 ## 🛠️ Installation
 
-### Choose your install method:
-
----
-
-### ▶️ Option 1: Manual (Python)
-
-1. Clone the repo:
-```sh
-git clone https://github.com/netplexflix/TV-show-status-for-Kometa.git
-cd TV-show-status-for-Kometa
-```
-
-> [!TIP]
->If you don't know what that means, then simply download the script by pressing the green 'Code' button above and then 'Download Zip'.  
->Extract the files to your desired folder.
-
-2. Install dependencies:
-- Ensure you have [Python](https://www.python.org/downloads/) installed (`>=3.11`).
-- Open a Terminal in the script's directory
-> [!TIP]
->Windows Users:  
->Go to the TSSK folder (where TSSK.py is). Right mouse click on an empty space in the folder and click `Open in Windows Terminal`.
-- Install the required dependencies by running:
-```sh
-pip install -r requirements.txt
-```
-
----
-
-### ▶️ Option 2: Docker
-
-If you prefer not to install Python and dependencies manually, you can use the official Docker image instead.
-
 1. Ensure you have [Docker](https://docs.docker.com/get-docker/) installed.
-2. Download the provided `docker-compose.yml` from this repository (or copy the example below).
-3. Run the container:
+
+2. Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Then edit `.env` with your settings. See [`.env.example`](.env.example) for the complete list of available environment variables.
+
+3. Review and customize the `docker-compose.yml` file if needed. See [`docker-compose.yml`](docker-compose.yml) for the complete configuration.
+
+4. Run the container:
 ```sh
 docker compose up -d
 ```
 
 This will:
-- Pull the latest `netplexflix/tssk` image from Docker Hub
+- Build the TSSK container with Python scheduler
 - Run the script on a daily schedule (by default at 2AM)
 - Mount your configuration and output directories into the container
 
-You can customize the run schedule by modifying the `CRON` environment variable in `docker-compose.yml`.
-
-> [!TIP]
-> You can point the TSSK script to write overlays/collections directly into your Kometa folders by adjusting the volume mounts.
-
-**Example `docker-compose.yml`:**
-
-```yaml
-version: "3.8"
-
-services:
-  tssk:
-    image: netplexflix/tssk:latest
-    container_name: tssk
-    environment:
-      - CRON=0 2 * * * # every day at 2am
-      - DOCKER=true # important for path reference
-    volumes:
-      - /your/local/config/tssk:/app/config
-      - /your/local/kometa/config:/config/kometa
-    restart: unless-stopped
-```
+You can customize the run schedule by modifying the `APP_TIMES` environment variable in your `.env` file (format: `HH:MM`, e.g., `02:00` for 2 AM, or `02:00,14:00` for multiple times).
 
 ---
 
-### 🧩 Continue Setup
+## 🧩 Continue Setup
 
 ### 1️⃣ Edit your Kometa config
 
-Open your **Kometa** config.yml (typically at `Kometa/config/config.yml`, NOT your TSSK config file).  
-Refer to the note above for where the files are saved depending on your setup.
+Open your **Kometa** config.yml (typically at `/config/config.yml`, NOT your TSSK config file).
 
-The `.yml` files created by TSSK that Kometa uses are stored in different folders depending on how you're running the script:
-
-- **Manual install**: files are saved directly to `kometa/` inside your TSSK folder (e.g. `TSSK/kometa/`)
-- **Docker install**: files are saved to `/config/kometa/tssk/` inside the container — assuming you mount your Kometa config folder to `/config`
+The `.yml` files created by TSSK that Kometa uses are saved to `/config/tssk/` inside the container — assuming you mount your Kometa config folder to `/config`.
 
 Make sure your Kometa config uses the correct path to reference those files.
 
 In your Kometa config, include paths to the generated .yml files under your `TV Shows` library:
 
-Manual install Example:
-
 ```yaml
 TV Shows:
-  metadata_files:
-  - file: P:/Scripts/TSSK/kometa/TSSK_TV_NEW_SEASON_METADATA.yml
-  overlay_files:
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SEASON_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_CANCELED_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_ENDED_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_RETURNING_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_SEASON_FINALE_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_FINAL_EPISODE_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SHOW_OVERLAYS.yml
   collection_files:
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SHOW_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SEASON_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_UPCOMING_FINALE_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_SEASON_FINALE_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_FINAL_EPISODE_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_CANCELED_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_ENDED_COLLECTION.yml
-  - file: P:/scripts/TSSK/kometa/TSSK_TV_RETURNING_COLLECTION.yml
-```
-
-Docker install Example:
-
-```yaml
-TV Shows:
-  metadata_files:
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SEASON_METADATA.yml
+  - file: /config/tssk/TSSK_TV_NEW_SEASON_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_UPCOMING_FINALE_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_FINAL_EPISODE_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_SEASON_FINALE_COLLECTION.yml
   overlay_files:
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SEASON_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_CANCELED_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_ENDED_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_RETURNING_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_SEASON_FINALE_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_FINAL_EPISODE_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SHOW_OVERLAYS.yml
-  collection_files:
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SHOW_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SEASON_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_UPCOMING_FINALE_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_SEASON_FINALE_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_FINAL_EPISODE_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_CANCELED_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_ENDED_COLLECTION.yml
-  - file: /config/kometa/tssk/TSSK_TV_RETURNING_COLLECTION.yml
+  - file: /config/tssk/TSSK_TV_NEW_SEASON_OVERLAYS.yml
+  - file: /config/tssk/TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml
+  - file: /config/tssk/TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml
+  - file: /config/tssk/TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml
+  - file: /config/tssk/TSSK_TV_FINAL_EPISODE_OVERLAYS.yml
+  - file: /config/tssk/TSSK_TV_SEASON_FINALE_OVERLAYS.yml
 ```
 
 > [!TIP]
-> Only add the files for the categories you want to enable. All are optional and independently generated based on your config settings.
-> If you add `TSSK_TV_NEW_SEASON_METADATA` the air date of the New Season premiere will be added to the beginning of the sort title so you can sort them by air date. 
+> Only add the files for the categories you want to enable. All are optional and independently generated based on your config settings. 
 
 ### 2️⃣ Edit your configuration file
 ---
 
 ## ⚙️ Configuration
-Rename `config.example.yml` to `config.yml` and edit the needed settings:
 
-- **sonarr_url:** Change if needed.
-- **sonarr_api_key:** Can be found in Sonarr under settings => General => Security.
-- **sonarr_timeout:** Increase if needed for large libraries.
-- **use_tvdb:** Change to `true` if you prefer TheTVDB statuses for returning and ended. (note: TheTVDB does not have the 'canceled' status)
-- **skip_unmonitored:** Default `true` will skip a show if the upcoming season/episode is unmonitored.
+### Environment Variables
+
+Create a `.env` file by copying the example file:
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your configuration. For the complete and up-to-date list of all environment variables, see [`.env.example`](.env.example).
+
+**Required variables:**
+- **SONARR_URL:** Your Sonarr instance URL (e.g., `http://localhost:8989`)
+- **SONARR_API_KEY:** Your Sonarr API key (found in Sonarr under Settings => General => Security)
+
+**Optional variables:**
+- **SONARR_TIMEOUT:** Request timeout in seconds (default: `90`)
+- **TZ:** Timezone (e.g., `America/New_York`)
+- **PUID/PGID:** User/Group IDs for file permissions (default: `1000`)
+- **APP_TIMES:** Schedule times in HH:MM format (default: `02:00`)
+- **RUN_AT_START:** Run immediately on startup (default: `true`)
+
+> [!NOTE]
+> Always refer to [`.env.example`](.env.example) for the latest environment variable options and defaults.
+
+### Config File
+
+Rename `data/config.example.yml` to `data/config.yml` and edit the needed settings:
+
+- **log_retention_runs:** Number of previous log runs to keep (default: `7`). Logs are automatically rotated and compressed.
+- **skip_unmonitored:** Default `false` if set to true it will skip a show if the upcoming season/episode is unmonitored.
 - **ignore_finales_tags:** Shows with these tags will be ignored when checking for finales.
 >[!NOTE]
-> For some shows, episodes are listed one at a time usually one week ahead in TheTVDB/Sonarr. Because of this, TSSK wrongly (yet logically..) thinks that the last episode listed in the season is a finale.
+> For some shows, episodes are listed one at a time usually one week ahead in Sonarr. Because of this, TSSK wrongly (yet logically..) thinks that the last episode listed in the season is a finale.
 > You can give problematic shows like this a tag in Sonarr so TSSK will ignore finales for that show and treat the current 'last' episode of the season as a regular episode.
 
-- **utc_offset:** Set the [UTC timezone](https://en.wikipedia.org/wiki/List_of_UTC_offsets) offset. e.g.: LA: -8, New York: -5, Amsterdam: +1, Tokyo: +9, etc
-
 >[!NOTE]
-> Some people may run their server on a different timezone (e.g. on a seedbox), therefor the script doesn't convert the air dates to your machine's local timezone. Instead, you can enter the utc offset you desire.<br>
+> Timezone is set via the `TZ` environment variable in your `.env` file (e.g., `TZ=America/New_York`). The script will automatically use this timezone for all date calculations and conversions.
 
 - **simplify_next_week_dates:** Will simplify dates to `today`, `tomorrow`, `friday` etc if the air date is within the coming week.
 - **process_:** Choose which categories you wish to process. Change to `false` to disable.
@@ -278,45 +193,19 @@ For each category, you can change the relevant settings:
 >Dividers can be `/`, `-` or a space
 
 ---
-## 🚀 Usage - Running the Script
+## 🚀 Usage
 
-If you're using the **Docker setup**, the script will run automatically according to the schedule defined by the `CRON` variable in your `docker-compose.yml`.  
+The script runs automatically according to the schedule defined by the `APP_TIMES` environment variable in your `.env` file (default: `02:00` for 2 AM daily). See [`docker-compose.yml`](docker-compose.yml) for the complete Docker configuration.  
 You can inspect the container logs to see output and monitor activity:
 
 ```sh
 docker logs -f tssk
 ```
 
-If you're using the **manual install**, follow the instructions below to run the script manually.
-
-Open a Terminal in your script directory and launch the script with:
-```sh
-python TSSK.py
-```
-The script will list matched and/or skipped shows and create the .yml files. <br/>
+The script will list matched and/or skipped shows and create the .yml files.  
 The previous configuration will be erased so Kometa will automatically remove overlays for shows that no longer match the criteria.
 
-> [!TIP]
-> Windows users can create a batch file to quickly launch the script.<br/>
-> Type `"[path to your python.exe]" "[path to the script]" -r pause"` into a text editor
->
-> For example:
-> ```
->"C:\Users\User1\AppData\Local\Programs\Python\Python311\python.exe" "P:\TSSK\TSSK.py" -r
->pause
-> ```
-> Save as a .bat file. You can now double click this batch file to directly launch the script.<br/>
-> You can also use this batch file to [schedule](https://www.windowscentral.com/how-create-automated-task-using-task-scheduler-windows-10) the script to run.
 ---
 
-
-### ⚠️ **Do you Need Help or have Feedback?**
-- Join the [Discord](https://discord.gg/VBNUJd7tx3).
- 
----  
-### ❤️ Support the Project
-If you like this project, please ⭐ star the repository and share it with the community!
-
-<br/>
-
-[!["Buy Me A Coffee"](https://github.com/user-attachments/assets/5c30b977-2d31-4266-830e-b8c993996ce7)](https://www.buymeacoffee.com/neekokeen)
+### ⚠️ **Original project can be found here**
+- https://github.com/netplexflix/TV-show-status-for-Kometa

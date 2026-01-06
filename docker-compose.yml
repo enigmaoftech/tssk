@@ -1,13 +1,43 @@
-version: "3.8"
-
 services:
   tssk:
-    image: netplexflix/tssk:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - PUID=${PUID:-1000}
+        - PGID=${PGID:-1000}
+    # image: ghcr.io/enigmaoftech/tssk:latest
     container_name: tssk
-    environment:
-      - CRON=0 2 * * * # every day at 2am
-      - DOCKER=true # important for path reference
-    volumes:
-      - /your/local/config/tssk:/app/config
-      - /your/local/kometa/config:/config/kometa
     restart: unless-stopped
+    user: "${PUID}:${PGID}"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - APP_TIMES=${APP_TIMES:-02:00}
+      - RUN_AT_START=${RUN_AT_START:-true}
+      - SONARR_URL=${SONARR_URL}
+      - SONARR_API_KEY=${SONARR_API_KEY}
+      - SONARR_TIMEOUT=${SONARR_TIMEOUT:-90}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      # Mount your Kometa config directory here
+      # TSSK will write files to /config/tssk/ inside the container
+      - ../apps/kometa/data:/config/kometa
+    
+    # Security hardening
+    tty: false
+    stdin_open: false
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    
+    # Read-only root filesystem; allow only what the app needs writable
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=256m
+    
+    # App process guardrails
+    pids_limit: 128
