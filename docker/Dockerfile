@@ -14,7 +14,7 @@ COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy scripts
-COPY app/tssk.py .
+COPY app/TSSK.py ./tssk.py
 COPY app/scheduler.py .
 COPY docker/entrypoint.sh /app/entrypoint.sh
 
