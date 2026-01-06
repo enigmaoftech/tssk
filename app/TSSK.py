@@ -101,7 +101,7 @@ def debug_print(message, config):
 
 def ensure_output_directory():
     """Ensure the output directory exists and is writable"""
-    output_dir = "/config/kometa/tssk/"
+    output_dir = "/app/tssk/"
     try:
         os.makedirs(output_dir, exist_ok=True)
         # Test write permissions
@@ -862,7 +862,7 @@ def format_date(yyyy_mm_dd, date_format, capitalize=False, simplify_next_week=Fa
 
 def create_collection_yaml(output_file, shows, config):
     # Ensure the directory exists
-    output_dir = "/config/kometa/tssk/"
+    output_dir = "/app/tssk/"
     try:
         os.makedirs(output_dir, exist_ok=True)
     except Exception as e:
@@ -883,22 +883,22 @@ def create_collection_yaml(output_file, shows, config):
         collection_name = ""
         default_summary = ""
         
-        if "SEASON_FINALE" in output_file:
+        if "season_finale" in output_file:
             config_key = "collection_season_finale"
             default_summary = f"Shows with a season finale that aired within the past {config.get('recent_days_season_finale', 21)} days"
-        elif "FINAL_EPISODE" in output_file:
+        elif "final_episode" in output_file:
             config_key = "collection_final_episode"
             default_summary = f"Shows with a final episode that aired within the past {config.get('recent_days_final_episode', 21)} days"
-        elif "NEW_SEASON_STARTED" in output_file:
+        elif "new_season_started" in output_file:
             config_key = "collection_new_season_started"
             default_summary = f"Shows with a new season that started within the past {config.get('recent_days_new_season_started', 14)} days"
-        elif "NEW_SEASON" in output_file:
+        elif "new_season" in output_file and "new_season_started" not in output_file:
             config_key = "collection_new_season"
             default_summary = f"Shows with a new season starting within {config.get('future_days_new_season', 31)} days"
-        elif "UPCOMING_EPISODE" in output_file:
+        elif "upcoming_episode" in output_file:
             config_key = "collection_upcoming_episode"
             default_summary = f"Shows with an upcoming episode within {config.get('future_days_upcoming_episode', 31)} days"
-        elif "UPCOMING_FINALE" in output_file:
+        elif "upcoming_finale" in output_file:
             config_key = "collection_upcoming_finale"
             default_summary = f"Shows with a season finale within {config.get('future_days_upcoming_finale', 31)} days"
         else:
@@ -1026,7 +1026,7 @@ def create_collection_yaml(output_file, shows, config):
 
 def create_overlay_yaml(output_file, shows, config_sections, config, backdrop_block_name="backdrop"):
     # Ensure the directory exists
-    output_dir = "/config/kometa/tssk/"
+    output_dir = "/app/tssk/"
     try:
         os.makedirs(output_dir, exist_ok=True)
     except Exception as e:
@@ -1043,10 +1043,10 @@ def create_overlay_yaml(output_file, shows, config_sections, config, backdrop_bl
             return
         
         # Check if this is a new season overlay (needs season number grouping)
-        is_new_season = "NEW_SEASON_OVERLAYS" in output_file or "NEW_SEASON_STARTED_OVERLAYS" in output_file
-        is_new_season_started = "NEW_SEASON_STARTED_OVERLAYS" in output_file
-        is_upcoming_finale = "UPCOMING_FINALE_OVERLAYS" in output_file
-        is_season_finale = "SEASON_FINALE_OVERLAYS" in output_file
+        is_new_season = "new_season_overlays" in output_file or "new_season_started_overlays" in output_file
+        is_new_season_started = "new_season_started_overlays" in output_file
+        is_upcoming_finale = "upcoming_finale_overlays" in output_file
+        is_season_finale = "season_finale_overlays" in output_file
         
         # Check if [#] placeholder is being used
         use_text_value = config_sections.get("text", {}).get("use_text", "")
@@ -1059,7 +1059,7 @@ def create_overlay_yaml(output_file, shows, config_sections, config, backdrop_bl
         all_tvdb_ids = set()
         
         # Check if this is a category that doesn't need dates
-        no_date_needed = "SEASON_FINALE" in output_file or "FINAL_EPISODE" in output_file
+        no_date_needed = "season_finale" in output_file or "final_episode" in output_file
         
         for s in shows:
             if s.get("tvdbId"):
@@ -1207,7 +1207,7 @@ def create_overlay_yaml(output_file, shows, config_sections, config, backdrop_bl
                     block_key = "TSSK_new_season_started"
                 elif is_season_finale:
                     block_key = "TSSK_season_finale"
-                elif "FINAL_EPISODE" in output_file:
+                elif "final_episode" in output_file:
                     block_key = "TSSK_final_episode"
                 elif is_upcoming_finale:
                     block_key = "TSSK_upcoming_finale"
@@ -1230,7 +1230,7 @@ def create_overlay_yaml(output_file, shows, config_sections, config, backdrop_bl
 
 def create_new_show_collection_yaml(output_file, config, recent_days):
     # Ensure the directory exists
-    output_dir = "/config/kometa/tssk/"
+    output_dir = "/app/tssk/"
     try:
         os.makedirs(output_dir, exist_ok=True)
     except Exception as e:
@@ -1320,7 +1320,7 @@ def create_new_show_collection_yaml(output_file, config, recent_days):
 def create_new_show_overlay_yaml(output_file, config_sections, recent_days, config, backdrop_block_name="backdrop_new_show"):
     """Create overlay YAML for new shows using Plex filters instead of Sonarr data"""  
     # Ensure the directory exists
-    output_dir = "/config/kometa/tssk/"
+    output_dir = "/app/tssk/"
     try:
         os.makedirs(output_dir, exist_ok=True)
     except Exception as e:
@@ -1460,7 +1460,7 @@ def main():
         
         # Helper function to delete files when a category is disabled
         def delete_category_files(overlay_file, collection_file=None, metadata_file=None):
-            output_dir = "/config/kometa/tssk/"
+            output_dir = "/app/tssk/"
             files_to_delete = [overlay_file]
             if collection_file:
                 files_to_delete.append(collection_file)
@@ -1478,34 +1478,34 @@ def main():
 
         # Delete files for disabled categories
         if not process_new_shows:
-            delete_category_files("TSSK_TV_NEW_SHOW_OVERLAYS.yml", "TSSK_TV_NEW_SHOW_COLLECTION.yml")
+            delete_category_files("new_show_overlays.yml", "new_show_collection.yml")
         
         if not process_new_season_soon:
-            delete_category_files("TSSK_TV_NEW_SEASON_OVERLAYS.yml", "TSSK_TV_NEW_SEASON_COLLECTION.yml")
+            delete_category_files("new_season_overlays.yml", "new_season_collection.yml")
         
         if not process_new_season_started:
-            delete_category_files("TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml", "TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml")
+            delete_category_files("new_season_started_overlays.yml", "new_season_started_collection.yml")
         
         if not process_upcoming_episode:
-            delete_category_files("TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml", "TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml")
+            delete_category_files("upcoming_episode_overlays.yml", "upcoming_episode_collection.yml")
         
         if not process_upcoming_finale:
-            delete_category_files("TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml", "TSSK_TV_UPCOMING_FINALE_COLLECTION.yml")
+            delete_category_files("upcoming_finale_overlays.yml", "upcoming_finale_collection.yml")
         
         if not process_season_finale:
-            delete_category_files("TSSK_TV_SEASON_FINALE_OVERLAYS.yml", "TSSK_TV_SEASON_FINALE_COLLECTION.yml")
+            delete_category_files("season_finale_overlays.yml", "season_finale_collection.yml")
         
         if not process_final_episode:
-            delete_category_files("TSSK_TV_FINAL_EPISODE_OVERLAYS.yml", "TSSK_TV_FINAL_EPISODE_COLLECTION.yml")
+            delete_category_files("final_episode_overlays.yml", "final_episode_collection.yml")
 
         # ---- New Show ----
         if process_new_shows:
-            create_new_show_overlay_yaml("TSSK_TV_NEW_SHOW_OVERLAYS.yml", 
+            create_new_show_overlay_yaml("new_show_overlays.yml", 
                                        {"backdrop": get_config_section(config, "backdrop_new_show"),
                                         "text": get_config_section(config, "text_new_show")}, 
                                        recent_days_new_show, config, "backdrop_new_show")
 
-            create_new_show_collection_yaml("TSSK_TV_NEW_SHOW_COLLECTION.yml", config, recent_days_new_show)
+            create_new_show_collection_yaml("new_show_collection.yml", config, recent_days_new_show)
             print(f"\n'New shows' overlay and collection .ymls created for shows added within the past {GREEN}{recent_days_new_show}{RESET} days")
 
         # ---- New Season Soon ----
@@ -1522,11 +1522,11 @@ def main():
                 print(f"\n{RED}No shows with new seasons starting within {future_days_new_season} days.{RESET}")
             
             # Create YAMLs for new seasons
-            create_overlay_yaml("TSSK_TV_NEW_SEASON_OVERLAYS.yml", matched_shows, 
+            create_overlay_yaml("new_season_overlays.yml", matched_shows, 
                                {"backdrop": config.get("backdrop_new_season", config.get("backdrop", {})),
                                 "text": config.get("text_new_season", config.get("text", {}))}, config, "backdrop_new_season")
             
-            create_collection_yaml("TSSK_TV_NEW_SEASON_COLLECTION.yml", matched_shows, config)
+            create_collection_yaml("new_season_collection.yml", matched_shows, config)
 
         # ---- New Season Started ----
         if process_new_season_started:
@@ -1544,11 +1544,11 @@ def main():
                 for show in new_season_started_shows:
                     print(f"- {show['title']} (Season {show['seasonNumber']}) started on {show['airDate']}")
             
-            create_overlay_yaml("TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml", new_season_started_shows, 
+            create_overlay_yaml("new_season_started_overlays.yml", new_season_started_shows, 
                                {"backdrop": config.get("backdrop_new_season_started", {}),
                                 "text": config.get("text_new_season_started", {})}, config, "backdrop_new_season_started")
             
-            create_collection_yaml("TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml", new_season_started_shows, config)
+            create_collection_yaml("new_season_started_collection.yml", new_season_started_shows, config)
 
         # ---- Upcoming Regular Episodes ----
         if process_upcoming_episode:
@@ -1564,11 +1564,11 @@ def main():
                 for show in upcoming_eps:
                     print(f"- {show['title']} (S{show['seasonNumber']}E{show['episodeNumber']}) airs on {show['airDate']}")
             
-            create_overlay_yaml("TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml", upcoming_eps, 
+            create_overlay_yaml("upcoming_episode_overlays.yml", upcoming_eps, 
                                {"backdrop": config.get("backdrop_upcoming_episode", {}),
                                 "text": config.get("text_upcoming_episode", {})}, config, "backdrop_upcoming_episode")
             
-            create_collection_yaml("TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml", upcoming_eps, config)
+            create_collection_yaml("upcoming_episode_collection.yml", upcoming_eps, config)
 
         # ---- Upcoming Finale Episodes ----
         if process_upcoming_finale:
@@ -1581,11 +1581,11 @@ def main():
                 for show in finale_eps:
                     print(f"- {show['title']} (S{show['seasonNumber']}E{show['episodeNumber']}) airs on {show['airDate']}")
             
-            create_overlay_yaml("TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml", finale_eps, 
+            create_overlay_yaml("upcoming_finale_overlays.yml", finale_eps, 
                                {"backdrop": config.get("backdrop_upcoming_finale", {}),
                                 "text": config.get("text_upcoming_finale", {})}, config, "backdrop_upcoming_finale")
             
-            create_collection_yaml("TSSK_TV_UPCOMING_FINALE_COLLECTION.yml", finale_eps, config)
+            create_collection_yaml("upcoming_finale_collection.yml", finale_eps, config)
         
         # ---- Recent Season Finales ----
         if process_season_finale:
@@ -1603,11 +1603,11 @@ def main():
                 for show in season_finale_shows:
                     print(f"- {show['title']} (S{show['seasonNumber']}E{show['episodeNumber']}) aired on {show['airDate']}")
             
-            create_overlay_yaml("TSSK_TV_SEASON_FINALE_OVERLAYS.yml", season_finale_shows, 
+            create_overlay_yaml("season_finale_overlays.yml", season_finale_shows, 
                                {"backdrop": config.get("backdrop_season_finale", {}),
                                 "text": config.get("text_season_finale", {})}, config, "backdrop_season_finale")
             
-            create_collection_yaml("TSSK_TV_SEASON_FINALE_COLLECTION.yml", season_finale_shows, config)
+            create_collection_yaml("season_finale_collection.yml", season_finale_shows, config)
         
         # ---- Recent Final Episodes ----
         if process_final_episode:
@@ -1625,11 +1625,11 @@ def main():
                 for show in final_episode_shows:
                     print(f"- {show['title']} (S{show['seasonNumber']}E{show['episodeNumber']}) aired on {show['airDate']}")
             
-            create_overlay_yaml("TSSK_TV_FINAL_EPISODE_OVERLAYS.yml", final_episode_shows, 
+            create_overlay_yaml("final_episode_overlays.yml", final_episode_shows, 
                                {"backdrop": config.get("backdrop_final_episode", {}),
                                 "text": config.get("text_final_episode", {})}, config, "backdrop_final_episode")
             
-            create_collection_yaml("TSSK_TV_FINAL_EPISODE_COLLECTION.yml", final_episode_shows, config)
+            create_collection_yaml("final_episode_collection.yml", final_episode_shows, config)
 
         # ---- skipped Shows ----
         if process_new_season_soon and skipped_shows:

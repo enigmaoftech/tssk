@@ -3,7 +3,7 @@
 Python-based scheduler for TSSK.
 Replaces cron to allow running without root privileges.
 
-This script schedules TSSK.py to run at configured intervals.
+This script schedules tssk.py to run at configured intervals.
 """
 
 import os
@@ -132,7 +132,7 @@ def log_message(message):
     print(log_line.rstrip(), flush=True)
 
 def run_tssk():
-    """Run the TSSK.py script."""
+    """Run the tssk.py script."""
     # Rotate logs before running
     rotate_logs()
     
@@ -149,7 +149,7 @@ def run_tssk():
     os.chdir("/app")
     
     # Build command
-    cmd = [sys.executable, "-u", "TSSK.py"]
+    cmd = [sys.executable, "-u", "tssk.py"]
     
     # Run the script and capture output
     try:

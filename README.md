@@ -72,7 +72,7 @@ You can customize the run schedule by modifying the `APP_TIMES` environment vari
 
 Open your **Kometa** config.yml (typically at `/config/config.yml`, NOT your TSSK config file).
 
-The `.yml` files created by TSSK that Kometa uses are saved to `/config/tssk/` inside the container — assuming you mount your Kometa config folder to `/config`.
+The `.yml` files created by TSSK that Kometa uses are saved to `/app/tssk/` inside the container, which is mounted to your Kometa metadata directory.
 
 Make sure your Kometa config uses the correct path to reference those files.
 
@@ -81,19 +81,19 @@ In your Kometa config, include paths to the generated .yml files under your `TV 
 ```yaml
 TV Shows:
   collection_files:
-  - file: /config/tssk/TSSK_TV_NEW_SEASON_COLLECTION.yml
-  - file: /config/tssk/TSSK_TV_NEW_SEASON_STARTED_COLLECTION.yml
-  - file: /config/tssk/TSSK_TV_UPCOMING_EPISODE_COLLECTION.yml
-  - file: /config/tssk/TSSK_TV_UPCOMING_FINALE_COLLECTION.yml
-  - file: /config/tssk/TSSK_TV_FINAL_EPISODE_COLLECTION.yml
-  - file: /config/tssk/TSSK_TV_SEASON_FINALE_COLLECTION.yml
+  - file: /config/metadata/tssk/new_season_collection.yml
+  - file: /config/metadata/tssk/new_season_started_collection.yml
+  - file: /config/metadata/tssk/upcoming_episode_collection.yml
+  - file: /config/metadata/tssk/upcoming_finale_collection.yml
+  - file: /config/metadata/tssk/final_episode_collection.yml
+  - file: /config/metadata/tssk/season_finale_collection.yml
   overlay_files:
-  - file: /config/tssk/TSSK_TV_NEW_SEASON_OVERLAYS.yml
-  - file: /config/tssk/TSSK_TV_NEW_SEASON_STARTED_OVERLAYS.yml
-  - file: /config/tssk/TSSK_TV_UPCOMING_EPISODE_OVERLAYS.yml
-  - file: /config/tssk/TSSK_TV_UPCOMING_FINALE_OVERLAYS.yml
-  - file: /config/tssk/TSSK_TV_FINAL_EPISODE_OVERLAYS.yml
-  - file: /config/tssk/TSSK_TV_SEASON_FINALE_OVERLAYS.yml
+  - file: /config/metadata/tssk/new_season_overlays.yml
+  - file: /config/metadata/tssk/new_season_started_overlays.yml
+  - file: /config/metadata/tssk/upcoming_episode_overlays.yml
+  - file: /config/metadata/tssk/upcoming_finale_overlays.yml
+  - file: /config/metadata/tssk/final_episode_overlays.yml
+  - file: /config/metadata/tssk/season_finale_overlays.yml
 ```
 
 > [!TIP]

@@ -1,0 +1,270 @@
+################################################################################
+##########                         GENERAL:                           ##########
+################################################################################
+debug: false
+
+log_retention_runs: 7
+
+skip_unmonitored: false
+ignore_finales_tags: ignorefinales
+simplify_next_week_dates: false
+
+process_new_shows: true
+process_new_season_soon: true
+process_new_season_started: true
+process_upcoming_episode: true
+process_upcoming_finale: true
+process_final_episode: true
+process_season_finale: true
+
+################################################################################
+##########                         NEW SHOWS:                         ##########
+################################################################################
+
+recent_days_new_show: 7
+
+collection_new_show:
+  collection_name: "New Shows"
+  smart_label: title.desc
+  sort_title: "!010_11_New Shows"
+  ignore_blank_results: true
+
+backdrop_new_show:
+  enable: true
+  back_color: "#A3E635"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 40
+
+text_new_show:
+  use_text: "RECENTLY ADDED"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 40
+
+################################################################################
+##########                     NEW SEASON SOON:                       ##########
+################################################################################
+
+future_days_new_season: 31
+
+collection_new_season:
+  collection_name: "New Season Soon"
+  smart_label: title.desc
+  sort_title: "!010_12_New Season Soon"
+  ignore_blank_results: true
+
+backdrop_new_season:
+  enable: true
+  back_color: "#2ECC71"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 20
+
+text_new_season:
+  date_format: "ddd mm/dd"
+  capitalize_dates: true
+  use_text: "NEW SEASON"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 20
+
+################################################################################
+##########                    NEW SEASON STARTED:                     ##########
+################################################################################
+
+recent_days_new_season_started: 7
+
+collection_new_season_started:
+  collection_name: "New Season Started"
+  smart_label: title.desc
+  sort_title: "!010_13_New Season Started"
+  ignore_blank_results: true
+
+backdrop_new_season_started:
+  enable: true
+  back_color: "#E67E22"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 35
+
+text_new_season_started:
+  use_text: "NEW SEASON STARTED"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 35
+
+
+################################################################################
+##########                     UPCOMING EPISODE:                      ##########
+################################################################################
+
+future_days_upcoming_episode: 31
+
+collection_upcoming_episode:
+  collection_name: "Upcoming Episode"
+  smart_label: title.desc
+  sort_title: "!010_14_Upcoming Episode"
+  ignore_blank_results: true
+
+backdrop_upcoming_episode:
+  enable: true
+  back_color: "#3498DB"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 20
+
+text_upcoming_episode:
+  date_format: "ddd mm/dd"
+  capitalize_dates: true
+  use_text: "NEXT EPISODE"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 20
+
+################################################################################
+##########                      UPCOMING FINALE:                      ##########
+################################################################################
+
+future_days_upcoming_finale: 31
+
+collection_upcoming_finale:
+  collection_name: "Upcoming Finale"
+  smart_label: title.desc
+  sort_title: "!010_15_Upcoming Finale"
+  ignore_blank_results: true
+
+backdrop_upcoming_finale:
+  enable: true
+  back_color: "#48C9B0"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 40
+
+text_upcoming_finale:
+  date_format: "ddd mm/dd"
+  capitalize_dates: true
+  use_text: "FINALE AIRS"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 40
+
+################################################################################
+##########                       FINAL EPISODE:                       ##########
+################################################################################
+
+recent_days_final_episode: 7
+
+collection_final_episode:
+  collection_name: "Final Episode"
+  smart_label: title.desc
+  sort_title: "!010_16_Final Episode"
+  ignore_blank_results: true
+
+backdrop_final_episode:
+  enable: true
+  back_color: "#F1C40F"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 30
+
+text_final_episode:
+  use_text: "FINAL EPISODE"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 30
+
+################################################################################
+##########                       SEASON FINALE:                       ##########
+################################################################################
+
+recent_days_season_finale: 7
+
+collection_season_finale:
+  collection_name: "Season Finale"
+  smart_label: title.desc
+  sort_title: "!010_17_Season Finale"
+  ignore_blank_results: true
+
+backdrop_season_finale:
+  enable: true
+  back_color: "#F39C12"
+  back_height: 105
+  back_width: 1920
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 0
+  group: status_backdrop
+  weight: 30
+
+text_season_finale:
+  use_text: "SEASON FINALE"
+  horizontal_align: center
+  horizontal_offset: 0
+  vertical_align: bottom
+  vertical_offset: 24
+  font_size: 70
+  font_color: "#000000"
+  group: status_text
+  weight: 30

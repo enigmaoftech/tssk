@@ -3,28 +3,9 @@
 # Keep .env.example for users to copy
 !.env.example
 
-# Progress and cache files
-.progress.json
-.processed_albums.json
-
-# Data directory
-data/
-# Keep config.yml for users to customize
-!data/config.yml
-
 # Logs
 logs/
 *.log
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-ENV/
 
 # macOS
 .DS_Store

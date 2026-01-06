@@ -14,7 +14,7 @@ COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy scripts
-COPY app/TSSK.py .
+COPY app/tssk.py .
 COPY app/scheduler.py .
 COPY docker/entrypoint.sh /app/entrypoint.sh
 
@@ -23,8 +23,8 @@ RUN groupadd -g ${PGID} appuser 2>/dev/null || true && \
     useradd -u ${PUID} -g ${PGID} -m -s /bin/bash appuser 2>/dev/null || true
 
 # Create directories (will be overridden by volume mounts, but good for non-volume usage)
-RUN mkdir -p /app/data /app/logs /config/kometa/tssk && \
-    chown -R ${PUID}:${PGID} /app /config
+RUN mkdir -p /app/data /app/logs /app/tssk && \
+    chown -R ${PUID}:${PGID} /app
 
 # Set default environment variables (can be overridden)
 ENV APP_TIMES="02:00"
@@ -33,7 +33,7 @@ ENV PUID=${PUID}
 ENV PGID=${PGID}
 
 # Make scripts executable
-RUN chmod +x TSSK.py scheduler.py entrypoint.sh
+RUN chmod +x tssk.py scheduler.py entrypoint.sh
 
 # Note: Config and output files will be created by the application at runtime in mounted volumes
 # With read_only: true and volume mounts, the app will create files in mounted volumes

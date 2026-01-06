@@ -6,7 +6,7 @@
 # volume permissions set on the host or via a separate init step.
 
 # Ensure directories exist (may fail silently with read_only, that's ok)
-mkdir -p /app/data /app/logs /config/kometa/tssk 2>/dev/null || true
+mkdir -p /app/data /app/logs /app/tssk 2>/dev/null || true
 
 # Execute the command (scheduler.py)
 # Use exec to replace the shell process and ensure output is not buffered

@@ -22,9 +22,8 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
-      # Mount your Kometa config directory here
-      # TSSK will write files to /config/tssk/ inside the container
-      - ../apps/kometa/data:/config/kometa
+      # Mount your Kometa metadata directory here
+      - ../apps/kometa/data/metadata/tssk:/app/tssk
     
     # Security hardening
     tty: false
