@@ -23,7 +23,7 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
       # Mount your Kometa metadata directory here
-      - ../apps/kometa/data/metadata/tssk:/app/tssk
+      - ../kometa/data/metadata/tssk:/app/tssk
     
     # Security hardening
     tty: false
