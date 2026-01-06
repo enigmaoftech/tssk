@@ -1,5 +1,5 @@
 <p align="center">
-   <img width="567" height="204" alt="Image" src="https://github.com/user-attachments/assets/35eae37f-606c-4fbb-b063-fe80584e8af9" />
+   <img width="567" height="204" alt="Image" src="app/tssk.png" />
 </p>
 
 TSSK (TV Show Status for Kometa) checks [Sonarr](https://sonarr.tv/) for your TV Shows statuses and creates .yml files<br>
@@ -129,7 +129,7 @@ Then edit `.env` with your configuration. For the complete and up-to-date list o
 
 ### Config File
 
-Rename `data/config.example.yml` to `data/config.yml` and edit the needed settings:
+Edit `data/config.yml` with your settings. See [`data/config.yml`](data/config.yml) for the complete configuration file.
 
 - **log_retention_runs:** Number of previous log runs to keep (default: `7`). Logs are automatically rotated and compressed.
 - **skip_unmonitored:** Default `false` if set to true it will skip a show if the upcoming season/episode is unmonitored.
@@ -150,7 +150,7 @@ For each category, you can change the relevant settings:
 
 - **collection block:**
   - **collection_name:** The name of the collection.
-  - **smart_label:** Choose the sorting option. [More info here](https://metamanager.wiki/en/latest/files/builders/smart/#sort-options)
+  - **smart_label:** Choose the sorting option. [More info here](https://kometa.wiki/en/latest/files/builders/smart/#sort-options)
   - **sort_title:** Collection sort title.
   - etc
 >[!TIP]

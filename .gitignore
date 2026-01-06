@@ -9,8 +9,8 @@
 
 # Data directory
 data/
-# Keep config.example.yml for users to copy
-!data/config.example.yml
+# Keep config.yml for users to customize
+!data/config.yml
 
 # Logs
 logs/
