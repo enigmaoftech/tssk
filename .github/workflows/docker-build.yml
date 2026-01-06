@@ -1,12 +1,8 @@
 name: Docker Build and Test
 
 on:
-  push:
-    branches:
-      - main
-      - master
   release:
-    types: [published]   # also runs when you publish a release
+    types: [published]   # only runs when you click “Publish release”
 
 permissions:
   contents: read
@@ -22,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout release tag
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name || github.sha }}
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -34,7 +30,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # Tags/labels derived from the release tag (vX.Y.Z), plus semver and sha
-      # For pushes, use latest and commit sha
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -45,7 +40,6 @@ jobs:
             type=semver,pattern={{version}}      # 1.2.3
             type=semver,pattern={{major}}.{{minor}} # 1.2
             type=semver,pattern={{major}}        # 1
-            type=raw,value=latest,enable={{is_default_branch}}  # latest for main/master
             type=sha                              # commit sha
 
       # Build a local test image that we can `docker run`
