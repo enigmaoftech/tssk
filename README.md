@@ -79,21 +79,23 @@ Make sure your Kometa config uses the correct path to reference those files.
 In your Kometa config, include paths to the generated .yml files under your `TV Shows` library:
 
 ```yaml
-TV Shows:
-  collection_files:
-  - file: /config/metadata/tssk/new_season_collection.yml
-  - file: /config/metadata/tssk/new_season_started_collection.yml
-  - file: /config/metadata/tssk/upcoming_episode_collection.yml
-  - file: /config/metadata/tssk/upcoming_finale_collection.yml
-  - file: /config/metadata/tssk/final_episode_collection.yml
-  - file: /config/metadata/tssk/season_finale_collection.yml
-  overlay_files:
-  - file: /config/metadata/tssk/new_season_overlays.yml
-  - file: /config/metadata/tssk/new_season_started_overlays.yml
-  - file: /config/metadata/tssk/upcoming_episode_overlays.yml
-  - file: /config/metadata/tssk/upcoming_finale_overlays.yml
-  - file: /config/metadata/tssk/final_episode_overlays.yml
-  - file: /config/metadata/tssk/season_finale_overlays.yml
+libraries:
+  TV Shows:
+    collection_files:
+    - file: /config/metadata/tssk/new_season_collection.yml
+    - file: /config/metadata/tssk/new_season_started_collection.yml
+    - file: /config/metadata/tssk/upcoming_episode_collection.yml
+    - file: /config/metadata/tssk/upcoming_finale_collection.yml
+    - file: /config/metadata/tssk/final_episode_collection.yml
+    - file: /config/metadata/tssk/season_finale_collection.yml
+    overlay_files:
+    - file: /config/metadata/tssk/new_season_overlays.yml
+    - file: /config/metadata/tssk/new_season_started_overlays.yml
+    - file: /config/metadata/tssk/upcoming_episode_overlays.yml
+    - file: /config/metadata/tssk/upcoming_finale_overlays.yml
+    - file: /config/metadata/tssk/final_episode_overlays.yml
+    - file: /config/metadata/tssk/season_finale_overlays.yml   
+    - file: /config/metadata/shows_overlay.yml
 ```
 
 > [!TIP]
